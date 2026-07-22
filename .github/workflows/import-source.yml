@@ -1,21 +1,22 @@
 name: Import and validate VPSNEW56 source
 
 on:
-  push:
-    paths:
-      - .github/import/READY
+  issues:
+    types: [opened]
 
 permissions:
   contents: write
 
 jobs:
   import-source:
+    if: github.event.issue.title == 'IMPORT_VPSNEW56_VALIDATED_SOURCE'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
       - name: Check out target repository
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Clone source and apply verified revision
