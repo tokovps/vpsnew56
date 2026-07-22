@@ -1,5 +1,0 @@
-source=tokovps/vpsnew55
-revision=vpsnew56
-patch_xz_sha256=a5ef600b6d10ae981c1c5e2e2f0fa3c2ca41410b827029e18cf1ee0aaaaf0766
-patch_sha256=f251ec86b06b11ba0854b30fb1d7045797dc4718caf8e07b1b6522dca4bcc6a5
-trigger=2
