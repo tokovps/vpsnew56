@@ -38,3 +38,7 @@ npm start
 - Patch XZ SHA-256: `a5ef600b6d10ae981c1c5e2e2f0fa3c2ca41410b827029e18cf1ee0aaaaf0766`
 - Patch SHA-256: `f251ec86b06b11ba0854b30fb1d7045797dc4718caf8e07b1b6522dca4bcc6a5`
 - ZIP final SHA-256: `9a78430ea76447e94abcee11f4008a312bfc0612886ebf9e00ba247fe127b999`
+
+## Status
+
+Revisi telah dipublikasikan ke branch `main`. ZIP final, patch, bootstrap, dan checksum telah diverifikasi pada 22 Juli 2026.
