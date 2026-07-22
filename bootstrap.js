@@ -29,6 +29,14 @@ const PATCHES = [
       path.join(ROOT, '.github', 'import', 'patch2-xz.part-00'),
     ],
   },
+  {
+    name: 'rdp-live-precheck-progress',
+    xzSha256: 'c63cf4f7e8b23264a856ddf415a4ed36e7c3565f9e3e29a7989cfa3dc4338a40',
+    patchSha256: 'c693082acbf8fcfd289ef859c46b81fad2886222155a1f7e324724bc3aef2cbf',
+    parts: [
+      path.join(ROOT, '.github', 'import', 'patch3-xz.part-00'),
+    ],
+  },
 ];
 
 function sha256(filePath) {
@@ -52,7 +60,7 @@ function download(url, destination, redirects = 0) {
   return new Promise((resolve, reject) => {
     if (redirects > 5) return reject(new Error('Too many redirects while downloading source'));
     const request = https.get(url, {
-      headers: { 'User-Agent': 'vpsnew56-bootstrap/1.1' },
+      headers: { 'User-Agent': 'vpsnew56-bootstrap/1.2' },
     }, (response) => {
       const status = Number(response.statusCode || 0);
       if (status >= 300 && status < 400 && response.headers.location) {
