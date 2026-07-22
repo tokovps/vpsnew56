@@ -13,8 +13,13 @@ Repository ini menyimpan revisi VPSNEW56 yang terkunci dan dapat direproduksi se
 - Kompatibilitas record Linux RDP lama dipertahankan hanya untuk recovery order historis agar data lama tidak menyebabkan crash.
 - Setelah user memilih region RDP, bot memeriksa seluruh versi Windows sebelum menampilkan menu OS.
 - Pemeriksaan mencakup token/provider DigitalOcean aktif, dukungan region dan size, mapping installer, serta keterjangkauan sumber ISO.
-- Hanya versi Windows bertanda ✅ yang dapat dipilih. Versi gagal tetap ditampilkan dengan alasan ringkas dan tidak diberi tombol order.
-- Hasil pemeriksaan memakai cache singkat dan in-flight deduplication agar banyak user tidak menjalankan pemeriksaan identik secara bersamaan.
+- Hanya versi Windows bertanda ✅ yang dapat dipilih. Versi gagal tetap ditampilkan dan tidak diberi tombol order.
+- Pre-check sekarang menggunakan progres hidup pada pesan yang sama: token, region/size, dan setiap OS berubah dari menunggu → diperiksa → siap/gagal berdasarkan event nyata.
+- Pemeriksaan OS tetap berjalan paralel agar cepat, sedangkan edit caption dibatasi sekitar satu kali per 900 ms agar aman dari flood limit Telegram.
+- Spinner terus bergerak ketika request provider atau sumber ISO sedang menunggu.
+- Banyak user dengan region/spec yang sama berbagi satu pemeriksaan provider/ISO, tetapi masing-masing menerima progres pada panel Telegram miliknya.
+- User yang membatalkan atau mengganti region tidak akan ditimpa hasil pemeriksaan lama.
+- Kegagalan edit caption sementara tidak membatalkan pemeriksaan dan tidak membuat pesan duplikat.
 - Tombol `CEK ULANG SEMUA OS` tersedia untuk memaksa pemeriksaan terbaru sebelum user melanjutkan.
 - Pre-check mengurangi kegagalan yang dapat diketahui sebelumnya, sedangkan final provisioning preflight tetap dijalankan kembali sebelum invoice/provisioning.
 
@@ -27,8 +32,10 @@ GitHub App yang digunakan untuk publikasi tidak memicu GitHub Actions. Karena it
 3. Menjalankan `git apply --check`, lalu menerapkan patch dasar.
 4. Menggabungkan dan memverifikasi patch pre-check OS RDP di `.github/import/patch2-xz.part-*`.
 5. Menjalankan `git apply --check`, lalu menerapkan patch pre-check OS.
-6. Mengganti bootstrap dengan source VPSNEW56 lengkap.
-7. Menjalankan `npm ci --ignore-scripts` dan `scripts/render-preflight.js`.
+6. Menggabungkan dan memverifikasi patch live progress di `.github/import/patch3-xz.part-*`.
+7. Menjalankan `git apply --check`, lalu menerapkan patch live progress.
+8. Mengganti bootstrap dengan source VPSNEW56 lengkap.
+9. Menjalankan `npm ci --ignore-scripts` dan `scripts/render-preflight.js`.
 
 Perintah deployment normal tetap dapat digunakan:
 
@@ -51,8 +58,19 @@ npm start
 
 - Patch XZ SHA-256: `d8b1815ef348bd2cafd0ecd0b92f0423f0bf84dfe7e89e6d25333c1a061bf577`
 - Patch SHA-256: `dbf97f64408b984700b9b36a56aa070f97ba4691de87ecdc839c374d3ef7b2cf`
-- ZIP final SHA-256: `0089fc748907f73b349bc9370d5a37ce563a47656d381adb4d92c81f33e1919c`
+
+### Patch RDP live pre-check
+
+- Patch XZ SHA-256: `c63cf4f7e8b23264a856ddf415a4ed36e7c3565f9e3e29a7989cfa3dc4338a40`
+- Patch SHA-256: `c693082acbf8fcfd289ef859c46b81fad2886222155a1f7e324724bc3aef2cbf`
+- ZIP final SHA-256: `b1a84b11e884aa0b7513c37d04dacfb3bf9a658c9f5af1f43147deb91fb6dcd9`
+
+## Pengaturan opsional
+
+- `RDP_LIVE_EDIT_MS`: interval minimum edit caption, default 900 ms dan minimum 700 ms.
+- `RDP_LIVE_SPINNER_MS`: interval spinner, default 1100 ms dan minimum 800 ms.
+- Pengaturan TTL, timeout, cache, dan concurrency all-OS pre-check lama tetap berlaku.
 
 ## Status
 
-Revisi pemeriksaan seluruh OS Windows RDP telah dipublikasikan ke branch `main`. Patch, bootstrap, ZIP, dan checksum telah diverifikasi pada 23 Juli 2026.
+Revisi live progress pemeriksaan seluruh OS Windows RDP telah dipublikasikan ke branch `main`. Patch, bootstrap, ZIP, checksum, caption Indonesia/Inggris, dan regression test telah diverifikasi pada 23 Juli 2026.
