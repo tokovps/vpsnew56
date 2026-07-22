@@ -1,0 +1,15 @@
+{
+  "name": "telegram-vps-rdp-store-vpsnew56-bootstrap",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Checksum-verified bootstrap for the complete VPSNEW56 source revision",
+  "scripts": {
+    "postinstall": "node bootstrap.js --install",
+    "build": "node bootstrap.js --build",
+    "start": "node bootstrap.js --start"
+  },
+  "engines": {
+    "node": ">=20.5.0 <23",
+    "npm": ">=9 <12"
+  }
+}
